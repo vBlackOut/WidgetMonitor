@@ -81,7 +81,10 @@ class Fader(wx.Frame):
             data2 = data2.split(",")
             data2[1] = data2[1].replace("current=", "")
             if int(data2[1]) > 0:
-                label_fan[str(i)].SetLabel("fan "+ str(i) +" : "+data2[1]+" RPM")
+                try:
+                    label_fan[str(i)].SetLabel("fan "+ str(i) +" : "+data2[1]+" RPM")
+                except KeyError:
+                    continue
 
         data2 = re.sub('shwtemp', '', str(data['w83793'][0]))
         data2 = re.sub('[()]', '', str(data2))
