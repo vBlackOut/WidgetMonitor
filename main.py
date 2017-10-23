@@ -45,8 +45,8 @@ class Fader(wx.Frame):
             data2[1] = data2[1].replace("current=", "")
             if int(data2[1]) > 0:
                 correct = correct + 1
-                print('label_fan' + str(i))
-                label_fan[str(i)] = wx.StaticText(panel, wx.ID_ANY, label="fan "+ str(i) +" : "+data2[1]+" RPM", pos=(0,100+correct*20), size=(200,20), style=wx.ALIGN_CENTRE)
+                print('detecte label_fan' + str(i+1))
+                label_fan[str(i)] = wx.StaticText(panel, wx.ID_ANY, label="fan "+ str(i+1) +" : "+data2[1]+" RPM", pos=(0,100+correct*20), size=(200,20), style=wx.ALIGN_CENTRE)
 
         #self.timer = wx.Timer(self, wx.ID_ANY)
         #self.timer.Start(60)
@@ -82,7 +82,7 @@ class Fader(wx.Frame):
             data2[1] = data2[1].replace("current=", "")
             if int(data2[1]) > 0:
                 try:
-                    label_fan[str(i)].SetLabel("fan "+ str(i) +" : "+data2[1]+" RPM")
+                    label_fan[str(i)].SetLabel("fan "+ str(i+1) +" : "+data2[1]+" RPM")
                 except KeyError:
                     continue
 
