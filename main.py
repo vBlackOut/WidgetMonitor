@@ -9,7 +9,8 @@ import re
 class Fader(wx.Frame):
  
     def __init__(self):
-        wx.Frame.__init__(self, None, title='Test', size=(200, 300))
+        no_sys_menu = wx.CAPTION
+        wx.Frame.__init__(self, None, title='Test', size=(200, 150), style=no_sys_menu)
         self.amount = 200
         self.delta = 5
         panel = wx.Panel(self, wx.ID_ANY)
@@ -49,7 +50,7 @@ class Fader(wx.Frame):
     def update(self, event):
         # get ip
         ipEXT = requests.get("https://ip4.cuby-hebergs.com")
-        
+
         # get temperature
         data = psutil.sensors_temperatures()
         data2 = re.sub('shwtemp', '', str(data['w83793'][0]))
