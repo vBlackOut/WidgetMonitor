@@ -8,7 +8,13 @@ click on button start for refresh ever 5s information
 ```
 - wxPython ( python -m pip install wxpython )
 - psutil ( python -m pip install psutil )
+
 ```
+## Install via requirements.txt
+```
+pip install -r requirements.txt
+```
+
 
 ## Launch 
 ```
