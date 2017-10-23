@@ -7,7 +7,7 @@ click on button start for refresh ever 5s information
 ## Requirement  
 ```
 - wxPython ( python -m pip install wxpython )
-- psutils ( python -m pip install psutils )
+- psutil ( python -m pip install psutil )
 ```
 
 ## Launch 
