@@ -48,7 +48,7 @@ class Fader(wx.Frame):
  
     def update(self, event):
         # get ip
-        ipEXT = requests.get("http://ip4.cuby-hebergs.com")
+        ipEXT = requests.get("https://ip4.cuby-hebergs.com")
         
         # get temperature
         data = psutil.sensors_temperatures()
