@@ -2,6 +2,8 @@
   
 click on button start for refresh ever 5s information 
 
+Exclusive Update work for all fedora >= 20  
+
 ```
 - check fan speed
 - check update
