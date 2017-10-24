@@ -7,7 +7,12 @@ import re
 import subprocess
 import sys
 
- 
+
+# detect automatical controller
+detect_controller = psutil.sensors_fans()
+for control in detect_controller:
+    Controller = control
+
 class Fader(wx.Frame):
  
     def __init__(self):
@@ -42,7 +47,7 @@ class Fader(wx.Frame):
         label_fan = {}
         data_fans = psutil.sensors_fans()
         for i in range(0, 9):
-            data2 = re.sub('sfan', '', str(data_fans['w83793'][i]))
+            data2 = re.sub('sfan', '', str(data_fans[Controller][i]))
             data2 = re.sub('[()]', '', str(data2))
             data2 = data2.split(",")
             data2[1] = data2[1].replace("current=", "")
@@ -93,7 +98,7 @@ class Fader(wx.Frame):
         data = psutil.sensors_temperatures()
         data_fans = psutil.sensors_fans()
         for i in range(0, 9):
-            data2 = re.sub('sfan', '', str(data_fans['w83793'][i]))
+            data2 = re.sub('sfan', '', str(data_fans[Controller][i]))
             data2 = re.sub('[()]', '', str(data2))
             data2 = data2.split(",")
             data2[1] = data2[1].replace("current=", "")
@@ -103,7 +108,7 @@ class Fader(wx.Frame):
                 except KeyError:
                     continue
 
-        data2 = re.sub('shwtemp', '', str(data['w83793'][0]))
+        data2 = re.sub('shwtemp', '', str(data[Controller][0]))
         data2 = re.sub('[()]', '', str(data2))
         data2 = data2.split(",")
         data2[1] = data2[1].replace("current=", "")
