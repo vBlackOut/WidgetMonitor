@@ -11,7 +11,7 @@ Exclusive Update work for all fedora >= 20
 - check system sensor temperature
   ```
   
-![alt text](https://www.cuby-hebergs.com/dl/images/github/WidgetMonitor/main.png)
+![alt text](https://www.cuby-hebergs.com/dl/images/github/WidgetMonitor/mains.png)
 
 ## Requirement  
 ```
