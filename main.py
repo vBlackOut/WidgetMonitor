@@ -4,6 +4,7 @@ import time
 import requests
 import psutil
 import re
+import subprocess
 import sys
 
  
@@ -11,8 +12,9 @@ class Fader(wx.Frame):
  
     def __init__(self):
         global label_fan
+        global panel
         no_sys_menu = wx.CAPTION
-        wx.Frame.__init__(self, None, title='WidgetMonitor', size=(200, 220), style=no_sys_menu)
+        wx.Frame.__init__(self, None, title='WidgetMonitor', size=(200, 250), style=no_sys_menu)
         self.amount = 200
         self.delta = 5
         #self.ToggleWindowStyle(wx.STAY_ON_TOP)
@@ -35,6 +37,7 @@ class Fader(wx.Frame):
         self.labelIpEXT = wx.StaticText(panel, wx.ID_ANY, label="Your ip Externe : 0.0.0.0", pos=(0,75), size=(200,20), style=wx.ALIGN_CENTRE)
         self.labeltemp0 = wx.StaticText(panel, wx.ID_ANY, label="temp0 : 0°C", pos=(0,100), size=(200,20), style=wx.ALIGN_CENTRE)
 
+        #check fan speed
         correct = 0
         label_fan = {}
         data_fans = psutil.sensors_fans()
@@ -47,6 +50,11 @@ class Fader(wx.Frame):
                 correct = correct + 1
                 print('detecte label_fan' + str(i+1))
                 label_fan[str(i)] = wx.StaticText(panel, wx.ID_ANY, label="fan "+ str(i+1) +" : "+data2[1]+" RPM", pos=(0,100+correct*20), size=(200,20), style=wx.ALIGN_CENTRE)
+
+        # check update system
+        self.labelupdate_sys = wx.StaticText(panel, wx.ID_ANY, label="checking... update", pos=(0,100+correct*30), size=(200,20), style=wx.ALIGN_CENTRE)
+
+
 
         #self.timer = wx.Timer(self, wx.ID_ANY)
         #self.timer.Start(60)
@@ -119,7 +127,25 @@ class Fader(wx.Frame):
         else:
             self.labeltemp0.SetLabel("Temp0 : Error sensors !")
             self.labeltemp0.SetForegroundColour((255,0,0)) # set text color
+        _reg_ex_pkg = re.compile(b'^\S+\.', re.M)
+        output, error = subprocess.Popen(['dnf', 'check-update'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        updates = len(_reg_ex_pkg.findall(output))
+        if updates == 0:
+            self.labelupdate_sys.SetLabel("No update for your system")
+            self.labelupdate_sys.SetForegroundColour((127,255,0))
+        else:
+            self.labelupdate_sys.SetLabel("new update ("+updates+") totals packages")
+            self.labelupdate_sys.SetForegroundColour((255,150,0))
+            self.toggleBtn_update = wx.Button(self, wx.ID_ANY, "Update system", size=(100,52), pos=(50,-1))
+            self.toggleBtn_update.Bind(wx.EVT_BUTTON, self.UpdateSys)
 
+
+
+    def UpdateSys(self, event):
+        self.toggleBtn_update.Show(False)
+        self.labelupdate_sys.SetLabel("Update progress...")
+        output, error = subprocess.Popen(['dnf', 'update'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        event.Skip()
 
     def onMouseOver(self, event):
         # mouseover changes colour of button
