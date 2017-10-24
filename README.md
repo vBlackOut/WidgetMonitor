@@ -1,6 +1,13 @@
 # WidgetMonitor  
   
-click on button start for refresh ever 5s information  
+click on button start for refresh ever 5s information 
+
+```
+- check fan speed
+- check update
+- check your ip externe
+- check system sensor temperature
+  ```
   
 ![alt text](https://www.cuby-hebergs.com/dl/images/github/WidgetMonitor/main.png)
 
