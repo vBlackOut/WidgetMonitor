@@ -14,7 +14,7 @@ class Fader(wx.Frame):
         global label_fan
         global panel
         no_sys_menu = wx.CAPTION
-        wx.Frame.__init__(self, None, title='WidgetMonitor', size=(200, 250), style=no_sys_menu)
+        wx.Frame.__init__(self, None, title='WidgetMonitor', size=(200, 320), style=no_sys_menu)
         self.amount = 200
         self.delta = 5
         #self.ToggleWindowStyle(wx.STAY_ON_TOP)
@@ -54,6 +54,15 @@ class Fader(wx.Frame):
         # check update system
         self.labelupdate_sys = wx.StaticText(panel, wx.ID_ANY, label="checking... update", pos=(0,100+correct*30), size=(200,20), style=wx.ALIGN_CENTRE)
 
+        # check cpu count
+        self.labelinfo_sys = wx.StaticText(panel, wx.ID_ANY, label="Information system", pos=(0,100+correct*40), size=(200,20), style=wx.ALIGN_CENTRE)
+
+        self.labelcpu_sys = wx.StaticText(panel, wx.ID_ANY, label="Number core CPU " + str(psutil.cpu_count()), pos=(0,100+correct*45), size=(200,20), style=wx.ALIGN_CENTRE)
+        users = psutil.users()
+        for user in users:
+            self.labelusername_sys = wx.StaticText(panel, wx.ID_ANY, label="Username " + str(user[0]), pos=(0,100+correct*50), size=(200,20), style=wx.ALIGN_CENTRE)
+
+        self.labelcopyright = wx.StaticText(panel, wx.ID_ANY, label="© vBlackOut", pos=(0,100+correct*55), size=(200,20), style=wx.ALIGN_CENTRE)
 
 
         #self.timer = wx.Timer(self, wx.ID_ANY)
@@ -134,7 +143,7 @@ class Fader(wx.Frame):
             self.labelupdate_sys.SetLabel("No update for your system")
             self.labelupdate_sys.SetForegroundColour((127,255,0))
         else:
-            self.labelupdate_sys.SetLabel("new update ("+updates+") totals packages")
+            self.labelupdate_sys.SetLabel("new update ("+updates+") total packages")
             self.labelupdate_sys.SetForegroundColour((255,150,0))
             self.toggleBtn_update = wx.Button(self, wx.ID_ANY, "Update system", size=(100,52), pos=(50,-1))
             self.toggleBtn_update.Bind(wx.EVT_BUTTON, self.UpdateSys)
