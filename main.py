@@ -256,7 +256,10 @@ class Fader(wx.Frame):
             pass
 
         _reg_ex_pkg = re.compile(b'^\S+\.', re.M)
-        output, error = subprocess.Popen(['dnf', 'check-update'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        try:
+           output, error = subprocess.Popen(['dnf', 'check-update'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        except OSError:
+           output, error = subprocess.Popen(['sudo', 'apt-get', '-u', '-V', 'update'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         updates = len(_reg_ex_pkg.findall(output))
         if updates == 0:
             self.labelupdate_sys.SetLabel("No update for your system")
