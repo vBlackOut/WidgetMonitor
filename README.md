@@ -11,8 +11,9 @@ Exclusive Update work for all fedora >= 20
 - check system sensor temperature
 - check ping
   ```
-  
-![alt text](https://www.cuby-hebergs.com/dl/images/github/WidgetMonitor/main3.png | width=48)![alt text](https://www.cuby-hebergs.com/dl/images/github/WidgetMonitor/mains3_update.png | width=48)
+
+![test](https://www.cuby-hebergs.com/dl/images/github/WidgetMonitor/main3.png ){:height="24px" width="48px"}![test](https://www.cuby-hebergs.com/dl/images/github/WidgetMonitor/mains3_update.png ){:height="24px" width="48px"}
+
 
 
 ## Requirement  
