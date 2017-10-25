@@ -13,8 +13,8 @@ Exclusive Update work for all fedora >= 20
 ```
 <table border="0" style="border:0px;">
   <tr><td>
-<a href="url"><img align="left" src="https://www.cuby-hebergs.com/dl/images/github/WidgetMonitor/main3.png" align="left" height="420" width="420" ></a>  </td>
-<td><a href="url"><img align="left" src="https://www.cuby-hebergs.com/dl/images/github/WidgetMonitor/mains3_update.png" align="left" height="420" width="420" ></a></td>
+<a href="url"><img align="left" src="https://www.cuby-hebergs.com/dl/images/github/WidgetMonitor/main3.png" align="left" height="400" width="400" ></a>  </td>
+<td><a href="url"><img align="left" src="https://www.cuby-hebergs.com/dl/images/github/WidgetMonitor/mains3_update.png" align="left" height="400" width="400" ></a></td>
   </tr>
   </table>
 
