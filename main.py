@@ -72,6 +72,9 @@ class Fader(wx.Frame):
             except KeyError:
                 continue
 
+        if correct == 0:
+           correct = 1
+
         if correct > 1:
             # check update system
             self.labelupdate_sys = wx.StaticText(panel, wx.ID_ANY, label="checking... update", pos=(0,110+correct*30), size=(200,20), style=wx.ALIGN_CENTRE)
@@ -308,5 +311,6 @@ def start():
     app.MainLoop()
 
 if __name__ == '__main__':
-    daemon = Daemonize(app="WidgetMonitor", pid=pid, action=start)
-    daemon.start()
+    #daemon = Daemonize(app="WidgetMonitor", pid=pid, action=start)
+    #daemon.start()
+    start()
