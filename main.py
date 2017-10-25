@@ -19,7 +19,7 @@ class Fader(wx.Frame):
         global label_fan
         global panel
         no_sys_menu = wx.CAPTION
-        wx.Frame.__init__(self, None, title='WidgetMonitor', size=(200, 320), style=no_sys_menu)
+        wx.Frame.__init__(self, None, title='WidgetMonitor', size=(200, 330), style=no_sys_menu)
         self.amount = 200
         self.delta = 5
         #self.ToggleWindowStyle(wx.STAY_ON_TOP)
@@ -40,7 +40,8 @@ class Fader(wx.Frame):
 
         self.label = wx.StaticText(panel, wx.ID_ANY, label=time.ctime(), pos=(0,50), size=(200,20), style=wx.ALIGN_CENTRE)
         self.labelIpEXT = wx.StaticText(panel, wx.ID_ANY, label="Your ip Externe : 0.0.0.0", pos=(0,75), size=(200,20), style=wx.ALIGN_CENTRE)
-        self.labeltemp0 = wx.StaticText(panel, wx.ID_ANY, label="temp0 : 0°C", pos=(0,100), size=(200,20), style=wx.ALIGN_CENTRE)
+        self.labelping = wx.StaticText(panel, wx.ID_ANY, label="check ping...", pos=(0,90), size=(200,20), style=wx.ALIGN_CENTRE)
+        self.labeltemp0 = wx.StaticText(panel, wx.ID_ANY, label="temp0 : 0°C", pos=(0,110), size=(200,20), style=wx.ALIGN_CENTRE)
 
         #check fan speed
         correct = 0
@@ -54,20 +55,20 @@ class Fader(wx.Frame):
             if int(data2[1]) > 0:
                 correct = correct + 1
                 print('detecte label_fan' + str(i+1))
-                label_fan[str(i)] = wx.StaticText(panel, wx.ID_ANY, label="fan "+ str(i+1) +" : "+data2[1]+" RPM", pos=(0,100+correct*20), size=(200,20), style=wx.ALIGN_CENTRE)
+                label_fan[str(i)] = wx.StaticText(panel, wx.ID_ANY, label="fan "+ str(i+1) +" : "+data2[1]+" RPM", pos=(0,110+correct*20), size=(200,20), style=wx.ALIGN_CENTRE)
 
         # check update system
-        self.labelupdate_sys = wx.StaticText(panel, wx.ID_ANY, label="checking... update", pos=(0,100+correct*30), size=(200,20), style=wx.ALIGN_CENTRE)
+        self.labelupdate_sys = wx.StaticText(panel, wx.ID_ANY, label="checking... update", pos=(0,110+correct*30), size=(200,20), style=wx.ALIGN_CENTRE)
 
         # check cpu count
-        self.labelinfo_sys = wx.StaticText(panel, wx.ID_ANY, label="Information system", pos=(0,100+correct*40), size=(200,20), style=wx.ALIGN_CENTRE)
+        self.labelinfo_sys = wx.StaticText(panel, wx.ID_ANY, label="Information system", pos=(0,110+correct*40), size=(200,20), style=wx.ALIGN_CENTRE)
 
-        self.labelcpu_sys = wx.StaticText(panel, wx.ID_ANY, label="Number core CPU " + str(psutil.cpu_count()), pos=(0,100+correct*45), size=(200,20), style=wx.ALIGN_CENTRE)
+        self.labelcpu_sys = wx.StaticText(panel, wx.ID_ANY, label="Number core CPU " + str(psutil.cpu_count()), pos=(0,110+correct*45), size=(200,20), style=wx.ALIGN_CENTRE)
         users = psutil.users()
         for user in users:
-            self.labelusername_sys = wx.StaticText(panel, wx.ID_ANY, label="Username " + str(user[0]), pos=(0,100+correct*50), size=(200,20), style=wx.ALIGN_CENTRE)
+            self.labelusername_sys = wx.StaticText(panel, wx.ID_ANY, label="Username " + str(user[0]), pos=(0,110+correct*50), size=(200,20), style=wx.ALIGN_CENTRE)
 
-        self.labelcopyright = wx.StaticText(panel, wx.ID_ANY, label="© vBlackOut", pos=(0,100+correct*55), size=(200,20), style=wx.ALIGN_CENTRE)
+        self.labelcopyright = wx.StaticText(panel, wx.ID_ANY, label="© vBlackOut", pos=(0,110+correct*55), size=(200,20), style=wx.ALIGN_CENTRE)
 
 
         #self.timer = wx.Timer(self, wx.ID_ANY)
@@ -91,8 +92,12 @@ class Fader(wx.Frame):
             self.toggleBtn.SetLabel("Start")
  
     def update(self, event):
+        try:
         # get ip
-        ipEXT = requests.get("https://ip4.cuby-hebergs.com")
+            ipEXT = requests.get("https://ip4.cuby-hebergs.com")
+            ipEXT = ipEXT.text 
+        except:
+            ipEXT = "no network"
 
         # get temperature
         data = psutil.sensors_temperatures()
@@ -114,33 +119,77 @@ class Fader(wx.Frame):
         data2[1] = data2[1].replace("current=", "")
 
         self.label.SetLabel(time.ctime())
-        self.labelIpEXT.SetLabel("Your ip Externe : "+ipEXT.text)
-        self.labeltemp0.SetLabel("Temp0 : "+data2[1]+"°C")
+        self.labelIpEXT.SetLabel("Your ip Externe : "+ipEXT)
 
-        if float(data2[1]) >= 0 or int(data2[1]):
-            try:
-                if int(data2[1]) < 55:
-                    self.labeltemp0.SetForegroundColour((127,255,0)) # set text color
-                if int(data2[1]) > 55:
-                    self.labeltemp0.SetForegroundColour((255,150,0)) # set text color
-                if int(data2[1]) > 80:
-                    self.labeltemp0.SetForegroundColour((255,0,0)) # set text color
-                if int(data2[1]) > 85:
-                    self.labeltemp0.SetLabel("Temp0 : "+data2[1]+"°C Warning /!\\")
-                    self.labeltemp0.SetForegroundColour((255,0,0)) # set text color
-            except ValueError:
-                if float(data2[1]) < 55:
-                    self.labeltemp0.SetForegroundColour((127,255,0)) # set text color
-                if float(data2[1]) > 55:
-                    self.labeltemp0.SetForegroundColour((255,150,0)) # set text color
-                if float(data2[1]) > 80:
-                    self.labeltemp0.SetForegroundColour((255,0,0)) # set text color
-                if float(data2[1]) > 85:
-                    self.labeltemp0.SetLabel("Temp0 : "+data2[1]+"°C Warning /!\\")
-                    self.labeltemp0.SetForegroundColour((255,0,0)) # set text color
+        # Run the "ping" command
+        command = "ping -W 1 -c 1 www.google.com"  # the shell command
+        output = subprocess.check_output(command, shell=True)
+
+        # And interpret the output
+        matches = re.findall(" time=([\d.]+) ms", output)
+        matches = [float(match) for match in matches]
+        ms = round(sum(matches)/len(matches),1)
+        self.labelping.SetLabel("your ping : "+str(ms)+" ms")
+
+        if ms < 200.0:
+            self.labelping.SetForegroundColour((127,255,0)) # set text color
         else:
-            self.labeltemp0.SetLabel("Temp0 : Error sensors !")
-            self.labeltemp0.SetForegroundColour((255,0,0)) # set text color
+            self.labelping.SetForegroundColour((255,0,0))
+
+
+        self.labeltemp0.SetLabel("Temp0 : "+data2[1]+"°C")
+        try:
+            if float(data2[1]) >= 0:
+                try:
+                    if int(data2[1]) < 55:
+                        self.labeltemp0.SetForegroundColour((127,255,0)) # set text color
+                    if int(data2[1]) > 55:
+                        self.labeltemp0.SetForegroundColour((255,150,0)) # set text color
+                    if int(data2[1]) > 80:
+                        self.labeltemp0.SetForegroundColour((255,0,0)) # set text color
+                    if int(data2[1]) > 85:
+                        self.labeltemp0.SetLabel("Temp0 : "+data2[1]+"°C Warning /!\\")
+                        self.labeltemp0.SetForegroundColour((255,0,0)) # set text color
+                except ValueError:
+                    if float(data2[1]) < 55:
+                        self.labeltemp0.SetForegroundColour((127,255,0)) # set text color
+                    if float(data2[1]) > 55:
+                        self.labeltemp0.SetForegroundColour((255,150,0)) # set text color
+                    if float(data2[1]) > 80:
+                        self.labeltemp0.SetForegroundColour((255,0,0)) # set text color
+                    if float(data2[1]) > 85:
+                        self.labeltemp0.SetLabel("Temp0 : "+data2[1]+"°C Warning /!\\")
+                        self.labeltemp0.SetForegroundColour((255,0,0)) # set text color
+            else:
+                self.labeltemp0.SetLabel("Temp0 : Error sensors !")
+                self.labeltemp0.SetForegroundColour((255,0,0)) # set text color
+
+        except ValueError:
+            if int(data2[1]) >= 0:
+                try:
+                    if int(data2[1]) < 55:
+                        self.labeltemp0.SetForegroundColour((127,255,0)) # set text color
+                    if int(data2[1]) > 55:
+                        self.labeltemp0.SetForegroundColour((255,150,0)) # set text color
+                    if int(data2[1]) > 80:
+                        self.labeltemp0.SetForegroundColour((255,0,0)) # set text color
+                    if int(data2[1]) > 85:
+                        self.labeltemp0.SetLabel("Temp0 : "+data2[1]+"°C Warning /!\\")
+                        self.labeltemp0.SetForegroundColour((255,0,0)) # set text color
+                except ValueError:
+                    if float(data2[1]) < 55:
+                        self.labeltemp0.SetForegroundColour((127,255,0)) # set text color
+                    if float(data2[1]) > 55:
+                        self.labeltemp0.SetForegroundColour((255,150,0)) # set text color
+                    if float(data2[1]) > 80:
+                        self.labeltemp0.SetForegroundColour((255,0,0)) # set text color
+                    if float(data2[1]) > 85:
+                        self.labeltemp0.SetLabel("Temp0 : "+data2[1]+"°C Warning /!\\")
+                        self.labeltemp0.SetForegroundColour((255,0,0)) # set text color
+            else:
+                self.labeltemp0.SetLabel("Temp0 : Error sensors !")
+                self.labeltemp0.SetForegroundColour((255,0,0)) # set text color
+
         _reg_ex_pkg = re.compile(b'^\S+\.', re.M)
         output, error = subprocess.Popen(['dnf', 'check-update'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         updates = len(_reg_ex_pkg.findall(output))
