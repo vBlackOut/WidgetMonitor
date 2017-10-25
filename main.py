@@ -1,4 +1,5 @@
 # coding: utf-8
+from daemonize import Daemonize
 import wx
 import time
 import requests
@@ -7,6 +8,8 @@ import re
 import subprocess
 import sys
 
+
+pid = "/tmp/WidgetMonitor.pid"
 
 # detect automatical controller
 detect_controller = psutil.sensors_fans()
@@ -102,11 +105,11 @@ class Fader(wx.Frame):
     def onToggle(self, event):
         btnLabel = self.toggleBtn.GetLabel()
         if btnLabel == "Start":
-            print "starting timer..."
+            print ("starting timer...")
             self.timer.Start(5000)
             self.toggleBtn.SetLabel("Stop")
         else:
-            print "timer stopped!"
+            print ("timer stopped!")
             self.timer.Stop()
             self.toggleBtn.SetLabel("Start")
  
@@ -271,8 +274,12 @@ class Fader(wx.Frame):
             self.amount = 0
         self.SetTransparent(self.amount)
  
-if __name__ == '__main__':
+def start():
     app = wx.App(False)
     frm = Fader()
     frm.Show()
     app.MainLoop()
+
+if __name__ == '__main__':
+    daemon = Daemonize(app="WidgetMonitor", pid=pid, action=start)
+    daemon.start()
