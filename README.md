@@ -30,7 +30,7 @@ pip install -r requirements.txt
 ```
 git clone https://github.com/vBlackOut/WidgetMonitor
 cd WidgetMonitor
-pip install -r requirements.txt
+sudo pip install -r requirements.txt
 sudo python main.py
 ```
 
