@@ -12,7 +12,9 @@ import sys
 pid = "/tmp/WidgetMonitor.pid"
 
 # detect automatical controller
+Controller = ""
 detect_controller = psutil.sensors_fans()
+print detect_controller
 for control in detect_controller:
     Controller = control
 
@@ -66,6 +68,9 @@ class Fader(wx.Frame):
                     label_fan[str(i)] = wx.StaticText(panel, wx.ID_ANY, label="fan "+ str(i+1) +" : "+data2[1]+" RPM", pos=(0,110+correct*20), size=(200,20), style=wx.ALIGN_CENTRE)
             except IndexError:
                 break
+
+            except KeyError:
+                continue
 
         if correct > 1:
             # check update system
@@ -154,6 +159,8 @@ class Fader(wx.Frame):
                         continue
             except IndexError:
                 break
+            except KeyError:
+                continue
 
         if Controller == "thinkpad":
             data2 = re.sub('shwtemp', '', str(data["acpitz"][0]))
@@ -162,10 +169,14 @@ class Fader(wx.Frame):
             data2[1] = data2[1].replace("current=", "")
 
         else:
-            data2 = re.sub('shwtemp', '', str(data[Controller][0]))
-            data2 = re.sub('[()]', '', str(data2))
-            data2 = data2.split(",")
-            data2[1] = data2[1].replace("current=", "")
+            try:
+               data2 = re.sub('shwtemp', '', str(data[Controller][0]))
+               data2 = re.sub('[()]', '', str(data2))
+               data2 = data2.split(",")
+               data2[1] = data2[1].replace("current=", "")
+            except KeyError:
+               pass
+
 
 
         self.label.SetLabel(time.ctime())
@@ -185,8 +196,10 @@ class Fader(wx.Frame):
         else:
             self.labelping.SetForegroundColour((255,0,0))
 
-
-        self.labeltemp0.SetLabel("Temp0 : "+data2[1]+"°C")
+        try:
+            self.labeltemp0.SetLabel("Temp0 : "+data2[1]+"°C")
+        except:
+           pass
         try:
             if float(data2[1]) >= 0:
                 try:
@@ -238,6 +251,9 @@ class Fader(wx.Frame):
             else:
                 self.labeltemp0.SetLabel("Temp0 : Error sensors !")
                 self.labeltemp0.SetForegroundColour((255,0,0)) # set text color
+        
+        except UnboundLocalError:
+            pass
 
         _reg_ex_pkg = re.compile(b'^\S+\.', re.M)
         output, error = subprocess.Popen(['dnf', 'check-update'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
