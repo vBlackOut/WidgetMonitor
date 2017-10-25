@@ -48,14 +48,17 @@ class Fader(wx.Frame):
         label_fan = {}
         data_fans = psutil.sensors_fans()
         for i in range(0, 9):
-            data2 = re.sub('sfan', '', str(data_fans[Controller][i]))
-            data2 = re.sub('[()]', '', str(data2))
-            data2 = data2.split(",")
-            data2[1] = data2[1].replace("current=", "")
-            if int(data2[1]) > 0:
-                correct = correct + 1
-                print('detecte label_fan' + str(i+1))
-                label_fan[str(i)] = wx.StaticText(panel, wx.ID_ANY, label="fan "+ str(i+1) +" : "+data2[1]+" RPM", pos=(0,110+correct*20), size=(200,20), style=wx.ALIGN_CENTRE)
+        	try:
+	            data2 = re.sub('sfan', '', str(data_fans[Controller][i]))
+	            data2 = re.sub('[()]', '', str(data2))
+	            data2 = data2.split(",")
+	            data2[1] = data2[1].replace("current=", "")
+	            if int(data2[1]) > 0:
+	                correct = correct + 1
+	                print('detecte label_fan' + str(i+1))
+	                label_fan[str(i)] = wx.StaticText(panel, wx.ID_ANY, label="fan "+ str(i+1) +" : "+data2[1]+" RPM", pos=(0,110+correct*20), size=(200,20), style=wx.ALIGN_CENTRE)
+	        except IndexError:
+	        	break
 
         # check update system
         self.labelupdate_sys = wx.StaticText(panel, wx.ID_ANY, label="checking... update", pos=(0,110+correct*30), size=(200,20), style=wx.ALIGN_CENTRE)
@@ -103,16 +106,19 @@ class Fader(wx.Frame):
         data = psutil.sensors_temperatures()
         data_fans = psutil.sensors_fans()
         for i in range(0, 9):
-            data2 = re.sub('sfan', '', str(data_fans[Controller][i]))
-            data2 = re.sub('[()]', '', str(data2))
-            data2 = data2.split(",")
-            data2[1] = data2[1].replace("current=", "")
-            if int(data2[1]) > 0:
-                try:
-                    label_fan[str(i)].SetLabel("fan "+ str(i+1) +" : "+data2[1]+" RPM")
-                except KeyError:
-                    continue
-
+        	try:
+	            data2 = re.sub('sfan', '', str(data_fans[Controller][i]))
+	            data2 = re.sub('[()]', '', str(data2))
+	            data2 = data2.split(",")
+	            data2[1] = data2[1].replace("current=", "")
+	            if int(data2[1]) > 0:
+	                try:
+	                    label_fan[str(i)].SetLabel("fan "+ str(i+1) +" : "+data2[1]+" RPM")
+	                except KeyError:
+	                    continue
+	        except IndexError:
+	        	break
+	    
         data2 = re.sub('shwtemp', '', str(data[Controller][0]))
         data2 = re.sub('[()]', '', str(data2))
         data2 = data2.split(",")
