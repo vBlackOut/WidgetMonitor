@@ -12,7 +12,7 @@ Exclusive Update work for all fedora >= 20
 - check ping
   ```
   
-![alt text](https://www.cuby-hebergs.com/dl/images/github/WidgetMonitor/main3.png)![alt text](https://www.cuby-hebergs.com/dl/images/github/WidgetMonitor/main3_update.png)
+![alt text](https://www.cuby-hebergs.com/dl/images/github/WidgetMonitor/main3.png)![alt text](https://www.cuby-hebergs.com/dl/images/github/WidgetMonitor/mains3_update.png)
 
 
 ## Requirement  
