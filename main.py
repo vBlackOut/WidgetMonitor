@@ -30,6 +30,7 @@ class Fader(wx.Frame):
  
         self.SetTransparent(self.amount)
         self.Maximize(False)
+        topSizer = wx.BoxSizer(wx.VERTICAL)
  
         ## ------- Fader Timer -------- ##
         self.timer = wx.Timer(self)
@@ -60,18 +61,33 @@ class Fader(wx.Frame):
 	        except IndexError:
 	        	break
 
-        # check update system
-        self.labelupdate_sys = wx.StaticText(panel, wx.ID_ANY, label="checking... update", pos=(0,110+correct*30), size=(200,20), style=wx.ALIGN_CENTRE)
+        if correct > 1:
+	        # check update system
+	        self.labelupdate_sys = wx.StaticText(panel, wx.ID_ANY, label="checking... update", pos=(0,110+correct*30), size=(200,20), style=wx.ALIGN_CENTRE)
 
-        # check cpu count
-        self.labelinfo_sys = wx.StaticText(panel, wx.ID_ANY, label="Information system", pos=(0,110+correct*40), size=(200,20), style=wx.ALIGN_CENTRE)
+	        # check cpu count
+	        self.labelinfo_sys = wx.StaticText(panel, wx.ID_ANY, label="Information system", pos=(0,110+correct*40), size=(200,20), style=wx.ALIGN_CENTRE)
 
-        self.labelcpu_sys = wx.StaticText(panel, wx.ID_ANY, label="Number core CPU " + str(psutil.cpu_count()), pos=(0,110+correct*45), size=(200,20), style=wx.ALIGN_CENTRE)
-        users = psutil.users()
-        for user in users:
-            self.labelusername_sys = wx.StaticText(panel, wx.ID_ANY, label="Username " + str(user[0]), pos=(0,110+correct*50), size=(200,20), style=wx.ALIGN_CENTRE)
+	        self.labelcpu_sys = wx.StaticText(panel, wx.ID_ANY, label="Number core CPU " + str(psutil.cpu_count()), pos=(0,110+correct*45), size=(200,20), style=wx.ALIGN_CENTRE)
+	        users = psutil.users()
+	        for user in users:
+	            self.labelusername_sys = wx.StaticText(panel, wx.ID_ANY, label="Username " + str(user[0]), pos=(0,110+correct*50), size=(200,20), style=wx.ALIGN_CENTRE)
 
-        self.labelcopyright = wx.StaticText(panel, wx.ID_ANY, label="© vBlackOut", pos=(0,110+correct*55), size=(200,20), style=wx.ALIGN_CENTRE)
+	        self.labelcopyright = wx.StaticText(panel, wx.ID_ANY, label="© vBlackOut", pos=(0,110+correct*55), size=(200,20), style=wx.ALIGN_CENTRE)
+	    
+        else:
+	    	# check update system
+	        self.labelupdate_sys = wx.StaticText(panel, wx.ID_ANY, label="checking... update", pos=(0,120+correct*30), size=(200,20), style=wx.ALIGN_CENTRE)
+
+	        # check cpu count
+	        self.labelinfo_sys = wx.StaticText(panel, wx.ID_ANY, label="Information system", pos=(0,130+correct*40), size=(200,20), style=wx.ALIGN_CENTRE)
+
+	        self.labelcpu_sys = wx.StaticText(panel, wx.ID_ANY, label="Number core CPU " + str(psutil.cpu_count()), pos=(0,140+correct*45), size=(200,20), style=wx.ALIGN_CENTRE)
+	        users = psutil.users()
+	        for user in users:
+	            self.labelusername_sys = wx.StaticText(panel, wx.ID_ANY, label="Username " + str(user[0]), pos=(0,150+correct*50), size=(200,20), style=wx.ALIGN_CENTRE)
+
+	        self.labelcopyright = wx.StaticText(panel, wx.ID_ANY, label="© vBlackOut", pos=(0,160+correct*55), size=(200,20), style=wx.ALIGN_CENTRE)
 
 
         #self.timer = wx.Timer(self, wx.ID_ANY)
@@ -106,23 +122,39 @@ class Fader(wx.Frame):
         data = psutil.sensors_temperatures()
         data_fans = psutil.sensors_fans()
         for i in range(0, 9):
-        	try:
-	            data2 = re.sub('sfan', '', str(data_fans[Controller][i]))
-	            data2 = re.sub('[()]', '', str(data2))
-	            data2 = data2.split(",")
-	            data2[1] = data2[1].replace("current=", "")
+            try:
+                if Controller == "thinkpad":
+                    data2 = re.sub('sfan', '', str(data_fans[Controller][i]))
+                    data2 = re.sub('[()]', '', str(data2))
+                    data2 = data2.split(",")
+                    data2[1] = data2[1].replace("current=", "")
+                    
+                else:
+                    data2 = re.sub('sfan', '', str(data_fans[Controller][i]))
+                    data2 = re.sub('[()]', '', str(data2))
+                    data2 = data2.split(",")
+                    data2[1] = data2[1].replace("current=", "")
+
 	            if int(data2[1]) > 0:
 	                try:
 	                    label_fan[str(i)].SetLabel("fan "+ str(i+1) +" : "+data2[1]+" RPM")
 	                except KeyError:
 	                    continue
-	        except IndexError:
+            except IndexError:
 	        	break
-	    
-        data2 = re.sub('shwtemp', '', str(data[Controller][0]))
-        data2 = re.sub('[()]', '', str(data2))
-        data2 = data2.split(",")
-        data2[1] = data2[1].replace("current=", "")
+
+        if Controller == "thinkpad":
+            data2 = re.sub('shwtemp', '', str(data["acpitz"][0]))
+            data2 = re.sub('[()]', '', str(data2))
+            data2 = data2.split(",")
+            data2[1] = data2[1].replace("current=", "")
+
+        else:
+            data2 = re.sub('shwtemp', '', str(data[Controller][0]))
+            data2 = re.sub('[()]', '', str(data2))
+            data2 = data2.split(",")
+            data2[1] = data2[1].replace("current=", "")
+
 
         self.label.SetLabel(time.ctime())
         self.labelIpEXT.SetLabel("Your ip Externe : "+ipEXT)
@@ -203,7 +235,7 @@ class Fader(wx.Frame):
             self.labelupdate_sys.SetLabel("No update for your system")
             self.labelupdate_sys.SetForegroundColour((127,255,0))
         else:
-            self.labelupdate_sys.SetLabel("new update ("+updates+") total packages")
+            self.labelupdate_sys.SetLabel("new update ("+str(updates)+") total packages")
             self.labelupdate_sys.SetForegroundColour((255,150,0))
             self.toggleBtn_update = wx.Button(self, wx.ID_ANY, "Update system", size=(100,52), pos=(50,-1))
             self.toggleBtn_update.Bind(wx.EVT_BUTTON, self.UpdateSys)
