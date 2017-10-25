@@ -16,11 +16,14 @@ detect_controller = psutil.sensors_fans()
 for control in detect_controller:
     Controller = control
 
+
 class Fader(wx.Frame):
  
     def __init__(self):
         global label_fan
         global panel
+        global ipEXT
+        self.t = time.time()
         no_sys_menu = wx.CAPTION
         wx.Frame.__init__(self, None, title='WidgetMonitor', size=(200, 330), style=no_sys_menu)
         self.amount = 200
@@ -114,12 +117,18 @@ class Fader(wx.Frame):
             self.toggleBtn.SetLabel("Start")
  
     def update(self, event):
-        try:
-        # get ip
-            ipEXT = requests.get("https://ip4.cuby-hebergs.com")
-            ipEXT = ipEXT.text 
-        except:
-            ipEXT = "no network"
+
+        if time.time()-self.t>3600 or time.time()-self.t<10:
+            try:
+            # get ip
+                ipEXT = requests.get("https://ip4.cuby-hebergs.com")
+                ipEXT = ipEXT.text 
+            except:
+                ipEXT = "no network"
+
+            self.labelIpEXT.SetLabel("Your ip Externe : "+ipEXT)
+            if time.time()-self.t>15:
+                self.t=time.time()
 
         # get temperature
         data = psutil.sensors_temperatures()
@@ -160,10 +169,9 @@ class Fader(wx.Frame):
 
 
         self.label.SetLabel(time.ctime())
-        self.labelIpEXT.SetLabel("Your ip Externe : "+ipEXT)
 
         # Run the "ping" command
-        command = "ping -W 1 -c 1 www.google.com"  # the shell command
+        command = "ping -c 2 www.google.com"  # the shell command
         output = subprocess.check_output(command, shell=True)
 
         # And interpret the output
