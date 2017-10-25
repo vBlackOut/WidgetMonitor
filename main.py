@@ -247,7 +247,7 @@ class Fader(wx.Frame):
         self.labelupdate_sys.SetLabel("Update progress...")
         time.sleep(2)
         output, error = subprocess.Popen(['sudo', 'dnf', 'update', "-y"], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print(output, error)
+        #print(output, error)
         self.labelupdate_sys.SetLabel("Finish")
         time.sleep(2)
         event.Skip()
