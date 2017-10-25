@@ -1,3 +1,4 @@
 psutil==5.4.0
 wxpython==4.0.0a1
 daemonize==2.4.7
+requests==2.13.0
