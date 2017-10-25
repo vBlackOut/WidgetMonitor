@@ -32,6 +32,7 @@ git clone https://github.com/vBlackOut/WidgetMonitor
 cd WidgetMonitor
 sudo pip install -r requirements.txt
 sudo python main.py
+click Start button
 ```
 
 Thank have fun...
