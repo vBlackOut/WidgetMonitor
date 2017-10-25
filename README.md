@@ -21,6 +21,7 @@ Exclusive Update work for all fedora >= 20
 ```
 - wxPython ( python -m pip install wxpython )
 - psutil ( python -m pip install psutil )
+- daemonize ( python -m pip install daemonize )
 
 ```
 ## Install via requirements.txt
