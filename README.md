@@ -9,9 +9,10 @@ Exclusive Update work for all fedora >= 20
 - check update
 - check your ip externe
 - check system sensor temperature
+- check ping
   ```
   
-![alt text](https://www.cuby-hebergs.com/dl/images/github/WidgetMonitor/mains1.png)
+![alt text](https://www.cuby-hebergs.com/dl/images/github/WidgetMonitor/main3.png)
 
 ## Requirement  
 ```
