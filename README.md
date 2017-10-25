@@ -1,4 +1,6 @@
-<p align="center"><h1>WidgetMonitor</h1></p>
+<p align="center">
+<h1>WidgetMonitor</h1>
+</p>
   
 click on button start for refresh ever 5s information 
 
