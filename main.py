@@ -311,6 +311,6 @@ def start():
     app.MainLoop()
 
 if __name__ == '__main__':
-    #daemon = Daemonize(app="WidgetMonitor", pid=pid, action=start)
-    #daemon.start()
-    start()
+    daemon = Daemonize(app="WidgetMonitor", pid=pid, action=start)
+    daemon.start()
+    #start()
