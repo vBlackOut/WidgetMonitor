@@ -42,7 +42,7 @@ click Start button
 
 ## Launch in daemon
 ```
-sudo pŷthon main.py -d 
+sudo python main.py -d 
 ```
 
 ## Bug
