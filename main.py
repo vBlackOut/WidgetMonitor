@@ -134,7 +134,7 @@ class Fader(wx.Frame):
             except:
                 ipEXT = "no network"
 
-            self.labelIpEXT.SetLabel("Your ip Externe : "+ipEXT)
+            self.labelIpEXT.SetLabel("Your ip Ext. : "+ipEXT)
             if time.time()-self.t>15:
                 self.t=time.time()
 
