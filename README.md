@@ -41,12 +41,10 @@ click Start button
 ```
 ## Bug
 ```
-
-On Ubuntu 16.10 fan_sensor return {}
 On Ubuntu 16.10 speed_fans return {}
 On Ubuntu system update check
-
 ```
+
 ## OS work test  
 Fedora 100%  
 Ubuntu 50%  
