@@ -34,6 +34,7 @@ pip install -r requirements.txt
 ```
 git clone https://github.com/vBlackOut/WidgetMonitor
 cd WidgetMonitor
+(for fedora) sudo dnf install -y wxPython
 sudo pip install -r requirements.txt
 sudo python main.py
 click Start button
