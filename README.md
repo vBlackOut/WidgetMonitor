@@ -47,7 +47,7 @@ On Ubuntu system update check
 
 ## OS work test  
 Fedora 100%  
-Ubuntu 50%  
+Ubuntu 75%  
 
 
 Thank have fun...
