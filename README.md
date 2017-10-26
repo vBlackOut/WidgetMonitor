@@ -19,6 +19,7 @@ Exclusive Update work for all fedora >= 20
 
 ## Requirement  
 ```
+- Recommandation system OS : Fedora 25 or highter
 - wxPython ( python -m pip install wxpython )
 - psutil ( python -m pip install psutil )
 - daemonize ( python -m pip install daemonize )
@@ -29,7 +30,6 @@ Exclusive Update work for all fedora >= 20
 pip install -r requirements.txt
 ```
 
-
 ## Launch 
 ```
 git clone https://github.com/vBlackOut/WidgetMonitor
@@ -37,6 +37,14 @@ cd WidgetMonitor
 sudo pip install -r requirements.txt
 sudo python main.py
 click Start button
+```
+## Bug
+```
+
+On Ubuntu 16.10 fan_sensor return {}
+On Ubuntu 16.10 speed_fans return {}
+On Ubuntu system update check
+
 ```
 
 Thank have fun...
