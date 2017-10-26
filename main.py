@@ -311,6 +311,11 @@ def start():
     app.MainLoop()
 
 if __name__ == '__main__':
-    daemon = Daemonize(app="WidgetMonitor", pid=pid, action=start)
-    daemon.start()
-    #start()
+    try:
+        if sys.argv[1] == "-d":
+            daemon = Daemonize(app="WidgetMonitor", pid=pid, action=start)
+            daemon.start()
+        else:
+            start()
+    except:
+        start()
