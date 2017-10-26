@@ -178,8 +178,10 @@ class Fader(wx.Frame):
                data2 = data2.split(",")
                data2[1] = data2[1].replace("current=", "")
             except KeyError:
-               pass
-
+                data2 = re.sub('shwtemp', '', str(data["coretemp"][0]))
+                data2 = re.sub('[()]', '', str(data2))
+                data2 = data2.split(",")
+                data2[1] = data2[1].replace("current=", "")
 
 
         self.label.SetLabel(time.ctime())
