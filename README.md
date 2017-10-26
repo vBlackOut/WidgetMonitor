@@ -37,7 +37,7 @@ cd WidgetMonitor
 (for fedora) sudo dnf install -y wxPython
 sudo pip install -r requirements.txt
 sudo python main.py
-click Start button
+# click Start button
 ```  
 
 ## Launch in daemon
