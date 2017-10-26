@@ -14,7 +14,7 @@ pid = "/tmp/WidgetMonitor.pid"
 # detect automatical controller
 Controller = ""
 detect_controller = psutil.sensors_fans()
-print detect_controller
+#print detect_controller
 for control in detect_controller:
     Controller = control
 
