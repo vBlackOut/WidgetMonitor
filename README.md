@@ -38,7 +38,13 @@ cd WidgetMonitor
 sudo pip install -r requirements.txt
 sudo python main.py
 click Start button
+```  
+
+## Launch in daemon
 ```
+sudo pŷthon main.py -d 
+```
+
 ## Bug
 ```
 On Ubuntu 16.10 speed_fans return {}
