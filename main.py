@@ -27,7 +27,7 @@ class Fader(wx.Frame):
         global ipEXT
         self.t = time.time()
         no_sys_menu = wx.CAPTION
-        wx.Frame.__init__(self, None, title='WidgetMonitor', size=(200, 330), style=no_sys_menu)
+        wx.Frame.__init__(self, None, title='WidgetMonitor', size=(200, 440), style=no_sys_menu)
         self.amount = 200
         self.delta = 5
         #self.ToggleWindowStyle(wx.STAY_ON_TOP)
@@ -77,31 +77,39 @@ class Fader(wx.Frame):
 
         if correct > 1:
             # check update system
-            self.labelupdate_sys = wx.StaticText(panel, wx.ID_ANY, label="checking... update", pos=(0,110+correct*30), size=(200,20), style=wx.ALIGN_CENTRE)
+            self.labelupdate_sys = wx.StaticText(panel, wx.ID_ANY, label="checking... update", pos=(0,110+correct*25), size=(200,20), style=wx.ALIGN_CENTRE)
 
             # check cpu count
-            self.labelinfo_sys = wx.StaticText(panel, wx.ID_ANY, label="Information system", pos=(0,110+correct*40), size=(200,20), style=wx.ALIGN_CENTRE)
+            self.labelinfo_sys = wx.StaticText(panel, wx.ID_ANY, label="Information system", pos=(0,110+correct*30), size=(200,20), style=wx.ALIGN_CENTRE)
 
-            self.labelcpu_sys = wx.StaticText(panel, wx.ID_ANY, label="Number core CPU " + str(psutil.cpu_count()), pos=(0,110+correct*45), size=(200,20), style=wx.ALIGN_CENTRE)
+            self.labelcpu_sys = wx.StaticText(panel, wx.ID_ANY, label="Number core CPU " + str(psutil.cpu_count()), pos=(0,110+correct*35), size=(200,20), style=wx.ALIGN_CENTRE)
             users = psutil.users()
             for user in users:
-                self.labelusername_sys = wx.StaticText(panel, wx.ID_ANY, label="Username " + str(user[0]), pos=(0,110+correct*50), size=(200,20), style=wx.ALIGN_CENTRE)
+                self.labelusername_sys = wx.StaticText(panel, wx.ID_ANY, label="Username " + str(user[0]), pos=(0,110+correct*40), size=(200,20), style=wx.ALIGN_CENTRE)
 
+            self.labelcpuload = wx.StaticText(panel, wx.ID_ANY, label="CPU load", pos=(0,110+correct*45), size=(200,20), style=wx.ALIGN_CENTRE)
+            self.gauge = wx.Gauge(panel, -1, 100, (40,110+correct*53), (120, 5))
+            self.gauge.SetBezelFace(3)
+            self.gauge.SetShadowWidth(3)
+            self.gauge.SetForegroundColour('red') 
+            
             self.labelcopyright = wx.StaticText(panel, wx.ID_ANY, label="© vBlackOut", pos=(0,110+correct*55), size=(200,20), style=wx.ALIGN_CENTRE)
         
         else:
             # check update system
-            self.labelupdate_sys = wx.StaticText(panel, wx.ID_ANY, label="checking... update", pos=(0,120+correct*30), size=(200,20), style=wx.ALIGN_CENTRE)
+            self.labelupdate_sys = wx.StaticText(panel, wx.ID_ANY, label="checking... update", pos=(0,110+correct*50), size=(200,20), style=wx.ALIGN_CENTRE)
 
             # check cpu count
-            self.labelinfo_sys = wx.StaticText(panel, wx.ID_ANY, label="Information system", pos=(0,130+correct*40), size=(200,20), style=wx.ALIGN_CENTRE)
+            self.labelinfo_sys = wx.StaticText(panel, wx.ID_ANY, label="Information system", pos=(0,110+correct*55), size=(200,20), style=wx.ALIGN_CENTRE)
 
-            self.labelcpu_sys = wx.StaticText(panel, wx.ID_ANY, label="Number core CPU " + str(psutil.cpu_count()), pos=(0,140+correct*45), size=(200,20), style=wx.ALIGN_CENTRE)
+            self.labelcpu_sys = wx.StaticText(panel, wx.ID_ANY, label="Number core CPU " + str(psutil.cpu_count()), pos=(0,110+correct*60), size=(200,20), style=wx.ALIGN_CENTRE)
             users = psutil.users()
             for user in users:
-                self.labelusername_sys = wx.StaticText(panel, wx.ID_ANY, label="Username " + str(user[0]), pos=(0,150+correct*50), size=(200,20), style=wx.ALIGN_CENTRE)
-
-            self.labelcopyright = wx.StaticText(panel, wx.ID_ANY, label="© vBlackOut", pos=(0,160+correct*55), size=(200,20), style=wx.ALIGN_CENTRE)
+                self.labelusername_sys = wx.StaticText(panel, wx.ID_ANY, label="Username " + str(user[0]), pos=(0,110+correct*65), size=(200,20), style=wx.ALIGN_CENTRE)
+        
+            self.gauge = wx.Gauge(panel, -1, 100, (40,110+correct*53), (120, 5))
+            self.gauge.SetForegroundColour(wx.Colour(0, 0, 0))
+            self.labelcopyright = wx.StaticText(panel, wx.ID_ANY, label="© vBlackOut", pos=(0,110+correct*70), size=(200,20), style=wx.ALIGN_CENTRE)
 
 
         #self.timer = wx.Timer(self, wx.ID_ANY)
@@ -275,6 +283,9 @@ class Fader(wx.Frame):
             self.toggleBtn_update = wx.Button(self, wx.ID_ANY, "Update system", size=(100,52), pos=(50,-1))
             self.toggleBtn_update.Bind(wx.EVT_BUTTON, self.UpdateSys)
 
+        cpu_freq = psutil.cpu_percent()
+        print(cpu_freq)
+        self.gauge.SetValue(cpu_freq)
 
 
     def UpdateSys(self, event):
