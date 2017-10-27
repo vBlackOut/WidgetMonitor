@@ -100,16 +100,17 @@ class Fader(wx.Frame):
             self.labelupdate_sys = wx.StaticText(panel, wx.ID_ANY, label="checking... update", pos=(0,110+correct*50), size=(200,20), style=wx.ALIGN_CENTRE)
 
             # check cpu count
-            self.labelinfo_sys = wx.StaticText(panel, wx.ID_ANY, label="Information system", pos=(0,110+correct*55), size=(200,20), style=wx.ALIGN_CENTRE)
+            self.labelinfo_sys = wx.StaticText(panel, wx.ID_ANY, label="Information system", pos=(0,120+correct*60), size=(200,20), style=wx.ALIGN_CENTRE)
 
-            self.labelcpu_sys = wx.StaticText(panel, wx.ID_ANY, label="Number core CPU " + str(psutil.cpu_count()), pos=(0,110+correct*60), size=(200,20), style=wx.ALIGN_CENTRE)
+            self.labelcpu_sys = wx.StaticText(panel, wx.ID_ANY, label="Number core CPU " + str(psutil.cpu_count()), pos=(0,130+correct*65), size=(200,20), style=wx.ALIGN_CENTRE)
             users = psutil.users()
             for user in users:
-                self.labelusername_sys = wx.StaticText(panel, wx.ID_ANY, label="Username " + str(user[0]), pos=(0,110+correct*65), size=(200,20), style=wx.ALIGN_CENTRE)
-        
-            self.gauge = wx.Gauge(panel, -1, 100, (40,110+correct*53), (120, 5))
+                self.labelusername_sys = wx.StaticText(panel, wx.ID_ANY, label="Username " + str(user[0]), pos=(0,140+correct*70), size=(200,20), style=wx.ALIGN_CENTRE)
+            
+            self.labelcpuload = wx.StaticText(panel, wx.ID_ANY, label="CPU load", pos=(0,150+correct*80), size=(200,20), style=wx.ALIGN_CENTRE)
+            self.gauge = wx.Gauge(panel, -1, 100, (40,160+correct*105), (120, 5))
             self.gauge.SetForegroundColour(wx.Colour(0, 0, 0))
-            self.labelcopyright = wx.StaticText(panel, wx.ID_ANY, label="© vBlackOut", pos=(0,110+correct*70), size=(200,20), style=wx.ALIGN_CENTRE)
+            self.labelcopyright = wx.StaticText(panel, wx.ID_ANY, label="© vBlackOut", pos=(0,170+correct*110), size=(200,20), style=wx.ALIGN_CENTRE)
 
 
         #self.timer = wx.Timer(self, wx.ID_ANY)
