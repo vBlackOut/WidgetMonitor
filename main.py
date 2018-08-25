@@ -14,13 +14,14 @@ pid = "/tmp/WidgetMonitor.pid"
 # detect automatical controller
 Controller = ""
 detect_controller = psutil.sensors_fans()
-#print detect_controller
+#print (detect_controller)
 for control in detect_controller:
     Controller = control
+    print(Controller)
 
 
 class Fader(wx.Frame):
- 
+
     def __init__(self):
         global label_fan
         global panel
@@ -35,11 +36,11 @@ class Fader(wx.Frame):
         panel = wx.Panel(self, wx.ID_ANY, style=style)
         if panel.CanSetTransparent:
             panel.SetTransparent(100)
- 
+
         self.SetTransparent(self.amount)
         self.Maximize(False)
         topSizer = wx.BoxSizer(wx.VERTICAL)
- 
+
         ## ------- Fader Timer -------- ##
         self.timer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.update, self.timer)
@@ -91,10 +92,10 @@ class Fader(wx.Frame):
             self.gauge = wx.Gauge(panel, -1, 100, (40,110+correct*53), (120, 5))
             self.gauge.SetBezelFace(3)
             self.gauge.SetShadowWidth(3)
-            self.gauge.SetForegroundColour('red') 
-            
+            self.gauge.SetForegroundColour('red')
+
             self.labelcopyright = wx.StaticText(panel, wx.ID_ANY, label="© vBlackOut", pos=(0,110+correct*55), size=(200,20), style=wx.ALIGN_CENTRE)
-        
+
         else:
             # check update system
             self.labelupdate_sys = wx.StaticText(panel, wx.ID_ANY, label="checking... update", pos=(0,110+correct*50), size=(200,20), style=wx.ALIGN_CENTRE)
@@ -106,9 +107,9 @@ class Fader(wx.Frame):
             users = psutil.users()
             for user in users:
                 self.labelusername_sys = wx.StaticText(panel, wx.ID_ANY, label="Username " + str(user[0]), pos=(0,140+correct*70), size=(200,20), style=wx.ALIGN_CENTRE)
-            
+
             self.labelcpuload = wx.StaticText(panel, wx.ID_ANY, label="CPU load", pos=(0,150+correct*80), size=(200,20), style=wx.ALIGN_CENTRE)
-            self.gauge = wx.Gauge(panel, -1, 100, (40,160+correct*105), (120, 5))
+            self.gauge = wx.Gauge(panel, -1, 100, (40,115+correct*130), (120, 20))
             self.gauge.SetForegroundColour(wx.Colour(0, 0, 0))
             self.labelcopyright = wx.StaticText(panel, wx.ID_ANY, label="© vBlackOut", pos=(0,170+correct*110), size=(200,20), style=wx.ALIGN_CENTRE)
 
@@ -132,14 +133,14 @@ class Fader(wx.Frame):
             print ("timer stopped!")
             self.timer.Stop()
             self.toggleBtn.SetLabel("Start")
- 
+
     def update(self, event):
 
         if time.time()-self.t>3600 or time.time()-self.t<10:
             try:
             # get ip
                 ipEXT = requests.get("https://ip4.cuby-hebergs.com")
-                ipEXT = ipEXT.text 
+                ipEXT = ipEXT.text
             except:
                 ipEXT = "no network"
 
@@ -157,7 +158,7 @@ class Fader(wx.Frame):
                     data2 = re.sub('[()]', '', str(data2))
                     data2 = data2.split(",")
                     data2[1] = data2[1].replace("current=", "")
-                    
+
                 else:
                     data2 = re.sub('sfan', '', str(data_fans[Controller][i]))
                     data2 = re.sub('[()]', '', str(data2))
@@ -187,10 +188,12 @@ class Fader(wx.Frame):
                data2 = data2.split(",")
                data2[1] = data2[1].replace("current=", "")
             except KeyError:
-                data2 = re.sub('shwtemp', '', str(data["coretemp"][0]))
-                data2 = re.sub('[()]', '', str(data2))
-                data2 = data2.split(",")
-                data2[1] = data2[1].replace("current=", "")
+                for control in data:
+                    data2 = re.sub('shwtemp', '', str(data[control][0]))
+                    data2 = re.sub('[()]', '', str(data2))
+                    data2 = data2.split(",")
+                    data2[1] = data2[1].replace("current=", "")
+                    break
 
 
         self.label.SetLabel(time.ctime())
@@ -265,7 +268,7 @@ class Fader(wx.Frame):
             else:
                 self.labeltemp0.SetLabel("Temp0 : Error sensors !")
                 self.labeltemp0.SetForegroundColour((255,0,0)) # set text color
-        
+
         except UnboundLocalError:
             pass
 
@@ -308,7 +311,7 @@ class Fader(wx.Frame):
         # mouse not over button, back to original colour
         self.SetTransparent(200)
         event.Skip()
- 
+
     def AlphaCycle(self, evt):
         self.amount += self.delta
         if self.amount >= 255:
@@ -317,7 +320,7 @@ class Fader(wx.Frame):
         if self.amount <= 0:
             self.amount = 0
         self.SetTransparent(self.amount)
- 
+
 def start():
     app = wx.App(False)
     frm = Fader()
